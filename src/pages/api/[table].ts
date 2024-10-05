@@ -50,7 +50,7 @@ export default async function handler(
       case "DELETE":
         res.json(
           await table.delete({
-            where: {id: parseInt(req.query.id)},
+            where: {id: parseInt(req.query.id as string)},
           })
         );
         break;
