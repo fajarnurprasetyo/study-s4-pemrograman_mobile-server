@@ -42,7 +42,14 @@ export default async function handler(
         const include =  req.query.table == "creditApplication" ?
           {creditor: true, motorcycle: true}
           : undefined;
-        res.json(await table.findUnique({where, include}));
+        if (req.query.id) {
+          res.json(await table.findUnique({
+            where: {id: parseInt(req.query.id as string)},
+            include,
+          }));
+        } else {
+          res.json(await table.findMany({include});
+        }
         break;
       case "DELETE":
         res.json(
