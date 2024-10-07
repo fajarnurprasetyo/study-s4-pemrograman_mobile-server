@@ -38,19 +38,11 @@ export default async function handler(
         );
         break;
       case "GET":
-        if (req.query.id) {
-          res.json(
-            await table.findUnique({
-              where: {id: req.query.id},
-            })
-          );
-        } else {
-          res.json(await table.findMany({
-            include: req.query.table == "creditApplication" ?
-              {creditor: true, motorcycle: true}
-              : undefined
-          }));
-        }
+        const where = req.query.id ? {id: req.query.id} : undefined;
+        const include =  req.query.table == "creditApplication" ?
+          {creditor: true, motorcycle: true}
+          : undefined;
+        res.json(await table.findUnique({where, include}));
         break;
       case "DELETE":
         res.json(
