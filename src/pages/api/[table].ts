@@ -45,7 +45,11 @@ export default async function handler(
             })
           );
         } else {
-          res.json(await table.findMany());
+          res.json(await table.findMany({
+            include: req.query.table == "creditApplication" ?
+              {creditor: true, motorcycle: true}
+              : undefined
+          }));
         }
         break;
       case "DELETE":
