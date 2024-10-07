@@ -27,7 +27,8 @@ export default async function handler(
   try {
     switch (req.method) {
       case "POST":
-        const {id, ...data} = req.body;
+        // Remove unnecessary  fields
+        const {id, creditor, motorcycle, createdAt, ...data} = req.body;
         res.json(
           await table.upsert({
             create: data,
