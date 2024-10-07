@@ -16,8 +16,8 @@ datasource db {
 model Employee {
   id   Int    @id @default(autoincrement())
   code Int    @unique
-  name String
-  role String
+  name String @db.VarChar(64)
+  role String @db.VarChar(32)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -26,8 +26,10 @@ model Employee {
 model Motorcycle {
   id    Int    @id @default(autoincrement())
   code  Int    @unique
-  name  String
-  price Float
+  name  String @db.VarChar(64)
+  price Float  @db.DoublePrecision
+
+  creditApplications CreditApplication[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -35,10 +37,27 @@ model Motorcycle {
 
 model Creditor {
   id      Int    @id @default(autoincrement())
-  name    String
-  job     String
-  phone   String
-  address String
+  name    String @db.VarChar(64)
+  job     String @db.VarChar(64)
+  phone   String @db.VarChar(13)
+  address String @db.VarChar(128)
+
+  creditApplications CreditApplication[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CreditApplication {
+  id                Int   @id @default(autoincrement())
+  creditorId        Int
+  motorcycleId      Int
+  downPayment       Float @db.DoublePrecision
+  interestPerYear   Float
+  installmentPeriod Int
+
+  creditor   Creditor   @relation(fields: [creditorId], references: [id])
+  motorcycle Motorcycle @relation(fields: [motorcycleId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
