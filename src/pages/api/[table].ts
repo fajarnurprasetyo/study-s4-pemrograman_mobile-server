@@ -38,7 +38,6 @@ export default async function handler(
         );
         break;
       case "GET":
-        const where = req.query.id ? {id: parseInt(req.query.id as string)} : undefined;
         const include =  req.query.table == "creditApplication" ?
           {creditor: true, motorcycle: true}
           : undefined;
@@ -48,7 +47,7 @@ export default async function handler(
             include,
           }));
         } else {
-          res.json(await table.findMany({include});
+          res.json(await table.findMany({include}));
         }
         break;
       case "DELETE":
