@@ -28,32 +28,32 @@ export default async function handler(
     switch (req.method) {
       case "POST":
         // Remove unnecessary  fields
-        const {id, creditor, motorcycle, createdAt, ...data} = req.body;
+        const { id, creditor, motorcycle, createdAt, ...data } = req.body;
         res.json(
           await table.upsert({
             create: data,
             update: data,
-            where: {id},
+            where: { id },
           })
         );
         break;
       case "GET":
-        const include =  req.query.table == "creditApplication" ?
-          {creditor: true, motorcycle: true}
+        const include = req.query.table == "creditApplication" ?
+          { creditor: true, motorcycle: true }
           : undefined;
         if (req.query.id) {
           res.json(await table.findUnique({
-            where: {id: parseInt(req.query.id as string)},
+            where: { id: parseInt(req.query.id as string) },
             include,
           }));
         } else {
-          res.json(await table.findMany({include}));
+          res.json(await table.findMany({ include }));
         }
         break;
       case "DELETE":
         res.json(
           await table.delete({
-            where: {id: parseInt(req.query.id as string)},
+            where: { id: parseInt(req.query.id as string) },
           })
         );
         break;
